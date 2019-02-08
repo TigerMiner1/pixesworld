@@ -9,7 +9,7 @@ const ytdl = require('ytdl-core');
 const search = require('yt-search');
 const configs = require("./configs.json");
 var botConfigs = {
-    token: process.env.token;
+    token: process.env.token
     prefix: "!",
     gameStatus: "Pixes World Games",
     commands: [{"id":1,"command":"about","message":"Coming Soon!","embed":false}],
