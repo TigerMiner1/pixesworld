@@ -50,7 +50,7 @@ client.on("message", async function (message) {
 	    configs.bannedWords.forEach(element => {
 	        if (message.content.includes(element)) {
 	            message.delete().catch(O_o => { });
-	            message.author.send("Please don't swear in the server");
+	            message.author.send("Please don't swear in the server!");
 	            return;
 	        }
 	    });
