@@ -11,18 +11,21 @@ const configs = require("./configs.json");
 var botConfigs = {
     token: process.env.token,
     prefix: "!",
-    gameStatus:  const_activities_list = [
-      "with the &help command.", 
-      "with the developers console",
-      "with some code", 
-      "with JavaScript"
-      ].
-    client.on("ready", function() {
+    gameStatus:  client.on("ready", function() {
       setInterval(function() {
           var actID = Math.floor(Math.random() * Math.floor(activevar.length));
           client.user.setActivity(activities);
       }, 10000)
-  }),
+  }),  
+    
+    
+    const_activities_list = [
+      "with the &help command.", 
+      "with the developers console",
+      "with some code", 
+      "with JavaScript"
+      ],
+    
     commands: [{"id":1,"command":"cmds","message":"The Commands Are!","embed":true,"embedFields":[{"title":"!purge","text":"Purges The Number of Messages Sent!"},{"title":"!kick(@user)","text":"Kicks The User!"},{"title":"!report(@user)","text":"Reports The User!"},{"title":"!tempmuteuser(@user)","text":"Temp Mutes A User!"},{"title":"!serverinfo","text":"Shows The Server Info!"}]},{"id":2,"command":"help","message":"More Commands are","embed":true,"embedFields":[{"title":"!play","text":"!play (name of music)"},{"title":"!lockdown","text":"Locks The channel"},{"title":"!shutdown","text":"A random Command"}]}],
     plugins: [{"id":0,"name":"Purge messages","activated":true,"config":"","info":{"example":"!purge 20","note":"","requirements":"Create a logs channel"}},{"id":1,"name":"Welcome message","activated":true,"config":"welcomemessage","info":{"example":"","note":"","requirements":"Create a channel"}},{"id":2,"name":"Kick user","activated":true,"config":"","info":{"example":"!kick @user spam","note":"","requirements":"Create a logs channel"}},{"id":3,"name":"Ban user","activated":true,"config":"","info":{"example":"!ban @user spam","note":"","requirements":"Create a logs channel"}},{"id":4,"name":"Report user","activated":true,"config":"","info":{"example":"!report @user spam","note":"","requirements":"Create a logs channel"}},{"id":5,"name":"Temp mute user","activated":true,"config":"","info":{"example":"!tempmute @user 10s","note":"s = seconds, m = minutes, h = hours","requirements":"Create a logs channel"}},{"id":6,"name":"Server info","activated":true,"config":"","info":{"example":"!serverinfo","note":"","requirements":""}},{"id":7,"name":"Weather info","activated":true,"config":"weather","info":{"example":"!weather Copenhagen","note":"","requirements":""}},{"id":8,"name":"Music - Export only","activated":true,"config":"","info":{"example":"!play {YouTube URL}, !leave, !pause, !resume, !queue, !skip","note":"Export only","requirements":""}},{"id":9,"name":"Channel lockdown","activated":true,"config":"","info":{"example":"!lockdown 10s","note":"s = seconds, m = minutes, h = hours","requirements":""}},{"id":10,"name":"Shutdown command","activated":true,"config":"","info":{"example":"!shutdown","note":"","requirements":""}},{"id":11,"name":"Banned words","activated":true,"config":"","info":{"example":"","note":"Auto delete messages contained banned words","requirements":""}}],
     welcomemessage: {"channelid":"541985319986135061","text":"Hello, welcome to Pixes World!"},
