@@ -11,7 +11,7 @@ const configs = require("./configs.json");
 var botConfigs = {
     token: process.env.token,
     prefix: "!",
-    gameStatus:  const activities_list = [
+    gameStatus:  const_activities_list = [
       "with the &help command.", 
       "with the developers console",
       "with some code", 
