@@ -11,13 +11,15 @@ const configs = require("./configs.json");
 var botConfigs = {
     token: process.env.token,
     prefix: "!",
-    gameStatus: const activities_list = { type: 'STREAMING' , url:"https://twitch.tv/gamerleb" }[
-      "Pixes World!", 
-      "Candy World!",
-      "Rob The Dockyard!", 
-      "Case Clicker!"
-      ], // creates an arraylist containing phrases you want your bot to switch through.
-  
+    gameStatus: let Statuses = ['Pixes World!','Candy World!','Rob The Dockyard!','Case Clicker!']
+    client.on('ready', () => {
+      setInterval(function() {
+        let status = statuses[Math.floor(Math.random()*statuses.legth)];
+
+        client.user.setPresence({ activity: {name: status }, status: 'STREAMING' , url:"https://twitch.tv/gamerleb"})
+
+      }, 10000)
+    }),
   client.on('ready', () => {
       setInterval(() => {
           const index = Math.floor(Math.random() * (activities_list.length - 1) + 1); // generates a random number between 1 and the length of the activities array list (in this case 5).
