@@ -19,7 +19,7 @@ var botConfigs = {
   }),  
     
     
-    const_activities_list = [
+    const activities_list = [
       "with the &help command.", 
       "with the developers console",
       "with some code", 
