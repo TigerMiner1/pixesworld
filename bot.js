@@ -11,46 +11,46 @@ const configs = require("./configs.json");
 var botConfigs = {
     token: process.env.token,
     prefix: "!",
-    gameStatus:  setInterval(() => {
-      (acV == 1)
+    gameStatus: setInterval(() => {
+      (status == 1)
       {
           client.user.setActivity(`${client.guilds.array()[0].memberCount.toString()} members`, { type: "WATCHING" })
           .catch(console.error); // If there's an error catch it then error it out to the console so Node.js doesn't scream at us for not catching the Promise error.
-          acV = 2;
-      }  (acV == 2) 
+          status = 2;
+      }  (status == 2) 
           client.user.setActivity(`for !help`, { type: 'WATCHING' })
           .catch(console.error);
-          acV = 3;
+          status = 3;
       
-       (acV == 3) 
+       (status == 3) 
           client.user.setActivity(`for !cmds`, { type: 'WATCHING' })
           .catch(console.error);
-          acV = 4;
-        (acV == 4) 
+          status= 4;
+        (status == 4) 
           client.user.setActivity(`Pixes World!`, { type: 'STREAMING', url: "https://twitch.tv/gamerleb" })
           .catch(console.error);
-          acV = 5;
+          status = 5;
       
-       (acV == 5)
+       (status == 5)
           client.user.setActivity(`Candy World!`, { type: 'PLAYING' })
           .catch(console.error);
-          acV = 6;
+          status= 6;
       
-       (acV == 6) 
+       (status == 6) 
           client.user.setActivity(`Rob The Dockyard!`, { type: 'PLAYING' })
           .catch(console.error);
-          acV = 7;
+          status = 7;
       
-       (acV == 7) 
+       (status == 7) 
         client.user.setActivity(`Case Clicker!`, { type: 'PLAYING' })
         .catch(console.error);
-        acV = 8;
+        status = 8;
        
           
        {
           client.user.setActivity(`Case Clicker!`, { type: 'PLAYING' })
           .catch(console.error);
-          acV = 1;
+          status = 1;
       }
     }, 5000),
     commands: [{"id":1,"command":"cmds","message":"The Commands Are!","embed":true,"embedFields":[{"title":"!purge","text":"Purges The Number of Messages Sent!"},{"title":"!kick(@user)","text":"Kicks The User!"},{"title":"!report(@user)","text":"Reports The User!"},{"title":"!tempmuteuser(@user)","text":"Temp Mutes A User!"},{"title":"!serverinfo","text":"Shows The Server Info!"}]},{"id":2,"command":"help","message":"More Commands are","embed":true,"embedFields":[{"title":"!play","text":"!play (name of music)"},{"title":"!lockdown","text":"Locks The channel"},{"title":"!shutdown","text":"A random Command"}]}],
