@@ -11,7 +11,7 @@ const configs = require("./configs.json");
 var botConfigs = {
     token: process.env.token,
     prefix: "!",
-    gameStatus:setInterval(() => {
+    gameStatus: setInterval(() => {
       if (acV == 1)
       {
           client.user.setActivity(`${client.guilds.array()[0].memberCount.toString()} members`, { type: "WATCHING" })
