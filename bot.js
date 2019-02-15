@@ -17,12 +17,7 @@ var botConfigs = {
     welcomemessage: {"channelid":"541985319986135061","text":"Hello, welcome to Pixes World!"},
     weather: {"degree":"C"}
 };
-client.on("ready", function() {
-  setInterval(function() {
-      var actID = Math.floor(Math.random() * Math.floor(activevar.length));
-      client.user.setActivity(activities);
-  }, 10000)
-});
+
 var ops = {
   active: active
 }
@@ -71,12 +66,7 @@ client.on("ready", async function () {
           .catch(console.error);
           status = 1;
       }
-    }, client.on("ready", function() {
-      setInterval(function() {
-          var actID = Math.floor(Math.random() * Math.floor(activevar.length));
-          client.user.setActivity(status);
-      }, 10000)
-  }))
+    }, 5000)
 });
 
 client.on("guildCreate", async function () {
@@ -316,7 +306,7 @@ client.on("message", async function (message) {
         .setAuthor(`Weather for ${current.observationpoint}`) // This shows the current location of the weather.
         .setThumbnail(current.imageUrl) // This sets the thumbnail of the embed
         .setColor(0x00AE86) // This sets the color of the embed, you can set this to anything if you look put a hex color picker, just make sure you put 0x infront of the hex
-        .addField('Timezone', `IST${location.timezone}`, true) // This is the first field, it shows the timezone, and the true means `inline`, you can read more about this on the official discord.js documentation
+        .addField('Timezone', `UTC${location.timezone}`, true) // This is the first field, it shows the timezone, and the true means `inline`, you can read more about this on the official discord.js documentation
         .addField('Degree Type', location.degreetype, true)// This is the field that shows the degree type, and is inline
         .addField('Temperature', `${current.temperature} Degrees`, true)
         .addField('Feels Like', `${current.feelslike} Degrees`, true)
@@ -378,7 +368,7 @@ client.on("message", async function (message) {
 
   if (command === "ping") {
       const msg = await message.channel.send("Pinging...");
-      await msg.edit(`:robot: Bot Ping: (Took: ${msg.createdTimestamp - message.createdTimestamp}ms.)`);
+      await msg.edit(`Pong! (Took: ${msg.createdTimestamp - message.createdTimestamp}ms.)`);
   }
 
   if (command === "shutdown" && botConfigs.plugins[10].activated == true) {
