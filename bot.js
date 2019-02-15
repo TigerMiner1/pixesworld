@@ -17,7 +17,12 @@ var botConfigs = {
     welcomemessage: {"channelid":"541985319986135061","text":"Hello, welcome to Pixes World!"},
     weather: {"degree":"C"}
 };
-
+client.on("ready", function() {
+  setInterval(function() {
+      var actID = Math.floor(Math.random() * Math.floor(activevar.length));
+      client.user.setActivity(activities);
+  }, 10000)
+});
 var ops = {
   active: active
 }
