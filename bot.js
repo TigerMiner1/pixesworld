@@ -66,7 +66,10 @@ client.on("ready", async function () {
           .catch(console.error);
           status = 1;
       }
-    }, 5000)
+    },  setInterval(function() {
+      var actID = Math.floor(Math.random() * Math.floor(activevar.length));
+      client.user.setActivity(activities);
+  }, 5000))
 });
 
 client.on("guildCreate", async function () {
