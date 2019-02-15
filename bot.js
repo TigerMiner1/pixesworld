@@ -17,16 +17,56 @@ var botConfigs = {
     welcomemessage: {"channelid":"541985319986135061","text":"Hello, welcome to Pixes World!"},
     weather: {"degree":"C"}
 };
-client.on('ready', () => {
-	// We have connected!
-	client.user.setActivity(`${tokens.prefix}help`, {url: "https://www.twitch.tv/valkyrienyanko"});
-  console.log(`${client.user.tag} running on ${client.guilds.size} guilds with ${client.users.size} users.`);
-	// Create the tables if they do not exist.
-	sql.run('CREATE TABLE IF NOT EXISTS settings (guildid TEXT UNIQUE, partner CHARACTER, desc VARCHAR)').then(() => {
-		for (const guild of client.guilds.values()){
-			sql.run('INSERT OR IGNORE INTO settings (guildid) VALUES (?)', [guild.id]);
-		}
-	});
+
+var ops = {
+  active: active
+}
+
+client.on("ready", async function () {
+	var status = 1;
+	
+  setInterval(() => {
+      (status == 1)
+      {
+          client.user.setActivity(`${client.guilds.array()[0].memberCount.toString()} members`, { type: "WATCHING" })
+          .catch(console.error); // If there's an error catch it then error it out to the console so Node.js doesn't scream at us for not catching the Promise error.
+          status = 2;
+      }  (status == 2) 
+          client.user.setActivity(`for !help`, { type: 'WATCHING' })
+          .catch(console.error);
+          status = 3;
+      
+       (status == 3) 
+          client.user.setActivity(`for !cmds`, { type: 'WATCHING' })
+          .catch(console.error);
+          status= 4;
+        (status == 4) 
+          client.user.setActivity(`Pixes World!`, { type: 'STREAMING', url: "https://twitch.tv/gamerleb" })
+          .catch(console.error);
+          status = 5;
+      
+       (status == 5)
+          client.user.setActivity(`Candy World!`, { type: 'PLAYING' })
+          .catch(console.error);
+          status= 6;
+      
+       (status == 6) 
+          client.user.setActivity(`Rob The Dockyard!`, { type: 'PLAYING' })
+          .catch(console.error);
+          status = 7;
+      
+       (status == 7) 
+        client.user.setActivity(`Case Clicker!`, { type: 'PLAYING' })
+        .catch(console.error);
+        status = 8;
+       
+          
+       {
+          client.user.setActivity(`Case Clicker!`, { type: 'PLAYING' })
+          .catch(console.error);
+          status = 1;
+      }
+    }, 5000)
 });
 
 client.on("guildCreate", async function () {
