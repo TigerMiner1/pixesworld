@@ -42,11 +42,7 @@ client.on("ready", async function () {
           (status == 4) 
           client.user.setActivity(`Candy World!`, { type: 'PLAYING' })
           .catch(console.error);
-          status = 5;
-       (status == 5)
-          client.user.setActivity(`Pixes World!`, { type: 'STREAMING', url: "https://twitch.tv/gamerleb" })
-          .catch(console.error);
-          status= 6;
+          status = 6;
        (status == 6) 
           client.user.setActivity(`Rob The Dockyard!`, { type: 'PLAYING' })
           .catch(console.error);
