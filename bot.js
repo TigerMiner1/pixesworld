@@ -18,6 +18,7 @@ var botConfigs = {
     weather: {"degree":"C"}
 };
 
+
 var ops = {
   active: active
 }
@@ -29,28 +30,22 @@ client.on("ready", async function () {
       (status == 1)
       {
           client.user.setActivity(`${client.guilds.array()[0].memberCount.toString()} members`, { type: "WATCHING" })
-          .catch(console.error); // If there's an error catch it then error it out to the console so Node.js doesn't scream at us for not catching the Promise error.
-          status = 2;
+          .catch(console.error); // If there's an error catch it then error it out to the console so Node.js doesn't scream at us for not catching the Promise error
       }  (status == 2) 
           client.user.setActivity(`for !help`, { type: 'WATCHING' })
           .catch(console.error);
-          status = 3;
        (status == 3) 
           client.user.setActivity(`for !cmds`, { type: 'WATCHING' })
           .catch(console.error);
-          status= 4;
           (status == 4) 
           client.user.setActivity(`Candy World!`, { type: 'PLAYING' })
           .catch(console.error);
-          status = 6;
        (status == 6) 
           client.user.setActivity(`Rob The Dockyard!`, { type: 'PLAYING' })
           .catch(console.error);
-          status = 7;
        (status == 7) 
         client.user.setActivity(`Case Clicker!`, { type: 'PLAYING' })
         .catch(console.error);
-        status = 8;
     }, 5000)
 });
 client.on("guildCreate", async function () {
