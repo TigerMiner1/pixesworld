@@ -35,40 +35,28 @@ client.on("ready", async function () {
           client.user.setActivity(`for !help`, { type: 'WATCHING' })
           .catch(console.error);
           status = 3;
-      
        (status == 3) 
           client.user.setActivity(`for !cmds`, { type: 'WATCHING' })
           .catch(console.error);
           status= 4;
-        (status == 4) 
+          (status == 4) 
           client.user.setActivity(`Candy World!`, { type: 'PLAYING' })
           .catch(console.error);
           status = 5;
-      
        (status == 5)
           client.user.setActivity(`Pixes World!`, { type: 'STREAMING', url: "https://twitch.tv/gamerleb" })
           .catch(console.error);
           status= 6;
-      
        (status == 6) 
           client.user.setActivity(`Rob The Dockyard!`, { type: 'PLAYING' })
           .catch(console.error);
           status = 7;
-      
        (status == 7) 
         client.user.setActivity(`Case Clicker!`, { type: 'PLAYING' })
         .catch(console.error);
         status = 8;
-       
-          
-       {
-          client.user.setActivity(`Case Clicker!`, { type: 'PLAYING' })
-          .catch(console.error);
-          status = 1;
-      }
     }, 5000)
 });
-
 client.on("guildCreate", async function () {
   client.user.setActivity(botConfigs.gameStatus);
 });
