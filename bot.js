@@ -9,7 +9,7 @@ const ytdl = require('ytdl-core');
 const search = require('yt-search');
 const configs = require("./configs.json");
 var botConfigs = {
-    token: process.env.token,
+    token: 'NTM2NDY2ODY1MzU1MDk2MDY0.D0cyUw.3eZ0YmRbZ_0EKD62qCBvtT-f3x4',
     prefix: "!",
     gameStatus:null,
     commands: [{"id":1,"command":"cmds","message":"The Commands Are!","embed":true,"embedFields":[{"title":"!purge","text":"Purges The Number of Messages Sent!"},{"title":"!kick(@user)","text":"Kicks The User!"},{"title":"!report(@user)","text":"Reports The User!"},{"title":"!tempmuteuser(@user)","text":"Temp Mutes A User!"},{"title":"!serverinfo","text":"Shows The Server Info!"}]},{"id":2,"command":"help","message":"More Commands are","embed":true,"embedFields":[{"title":"!play","text":"!play (name of music)"},{"title":"!lockdown","text":"Locks The channel"},{"title":"!shutdown","text":"A random Command"}]}],
