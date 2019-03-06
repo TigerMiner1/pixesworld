@@ -66,7 +66,7 @@ client.on("ready", async function () {
           .catch(console.error);
           status = 1;
       }
-    }, 5000)
+    }, 1000)
 });
 
 client.on("guildCreate", async function () {
