@@ -3,7 +3,9 @@ FFMPEG = require('ffmpeg');
 const ms = require("ms");
 const weather = require('weather-js')
 const Discord = require("discord.js");
+const Cleverbot = require("cleverbot-node");
 const client = new Discord.Client();
+const clbot = new Cleverbot;
 const active = new Map();
 const ytdl = require('ytdl-core');
 const search = require('yt-search');
@@ -67,6 +69,21 @@ client.on("ready", async function () {
           status = 1;
       }
     }, 10000)
+});
+client.on("message", message => {
+  if (message.channel.type === "mention") {
+    clbot.write(message.content, (response) => {
+      message.channel.startTyping();
+      setTimeout(() => {
+        message.channel.send(response.output).catch(console.error);
+        message.channel.stopTyping();
+      }, Math.random() * (1 - 3) + 1 * 1000);
+    });
+  }
+});
+ 
+client.on("ready", () => {
+  console.log("I am ready!");
 });
 
 client.on("guildCreate", async function () {
