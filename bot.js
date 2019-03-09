@@ -71,7 +71,7 @@ client.on("ready", async function () {
     }, 10000)
 });
 client.on("message", message => {
-  if (message.channel.type === "mention") {
+  if (message.channel.type === "dm") {
     clbot.write(message.content, (response) => {
       message.channel.startTyping();
       setTimeout(() => {
