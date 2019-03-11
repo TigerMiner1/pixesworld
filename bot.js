@@ -577,7 +577,6 @@ client.on("message", async function (message) {
 client.login(botConfigs.token);
 console.log("Bot started!");
 
-
 async function play(client, ops, data) {
 
   client.channels.get(data.queue[0].announceChannel).send(`Now Playing: ${data.queue[0].songTitle} | Requested By: ${data.queue[0].requester}`);
@@ -683,3 +682,10 @@ async function playYT(client, message, args, ops) {
 
   ops.active.set(message.guild.id, data);
 }
+
+
+
+    
+
+
+
