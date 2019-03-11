@@ -18,6 +18,7 @@
   "dependencies": {
     "discord-rpc": "^3.0.1",
     "discord.js": "^11.4.2",
+    "ffmpeg": "0.0.4",
     "jszip": "^3.1.5",
     "moment": "^2.24.0",
     "ms": "^2.1.1",
