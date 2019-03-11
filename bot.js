@@ -3,9 +3,7 @@ FFMPEG = require('ffmpeg');
 const ms = require("ms");
 const weather = require('weather-js')
 const Discord = require("discord.js");
-const Cleverbot = require("cleverbot-node");
 const client = new Discord.Client();
-const clbot = new Cleverbot;
 const active = new Map();
 const ytdl = require('ytdl-core');
 const search = require('yt-search');
@@ -13,11 +11,13 @@ const configs = require("./configs.json");
 var botConfigs = {
     token: process.env.token,
     prefix: "!",
-    gameStatus:null,
-    commands: [{"id":1,"command":"cmds","message":"The Commands Are!","embed":true,"embedFields":[{"title":"!purge","text":"Purges The Number of Messages Sent!"},{"title":"!kick(@user)","text":"Kicks The User!"},{"title":"!report(@user)","text":"Reports The User!"},{"title":"!tempmuteuser(@user)","text":"Temp Mutes A User!"},{"title":"!serverinfo","text":"Shows The Server Info!"}]},{"id":2,"command":"help","message":"More Commands are","embed":true,"embedFields":[{"title":"!play","text":"!play (name of music)"},{"title":"!lockdown","text":"Locks The channel"},{"title":"!shutdown","text":"A random Command"}]}],
-    plugins: [{"id":0,"name":"Purge messages","activated":true,"config":"","info":{"example":"!purge 20","note":"","requirements":"Create a logs channel"}},{"id":1,"name":"Welcome message","activated":true,"config":"welcomemessage","info":{"example":"","note":"","requirements":"Create a channel"}},{"id":2,"name":"Kick user","activated":true,"config":"","info":{"example":"!kick @user spam","note":"","requirements":"Create a logs channel"}},{"id":3,"name":"Ban user","activated":true,"config":"","info":{"example":"!ban @user spam","note":"","requirements":"Create a logs channel"}},{"id":4,"name":"Report user","activated":true,"config":"","info":{"example":"!report @user spam","note":"","requirements":"Create a logs channel"}},{"id":5,"name":"Temp mute user","activated":true,"config":"","info":{"example":"!tempmute @user 10s","note":"s = seconds, m = minutes, h = hours","requirements":"Create a logs channel"}},{"id":6,"name":"Server info","activated":true,"config":"","info":{"example":"!serverinfo","note":"","requirements":""}},{"id":7,"name":"Weather info","activated":true,"config":"weather","info":{"example":"!weather Copenhagen","note":"","requirements":""}},{"id":8,"name":"Music - Export only","activated":true,"config":"","info":{"example":"!play {YouTube URL}, !leave, !pause, !resume, !queue, !skip","note":"Export only","requirements":""}},{"id":9,"name":"Channel lockdown","activated":true,"config":"","info":{"example":"!lockdown 10s","note":"s = seconds, m = minutes, h = hours","requirements":""}},{"id":10,"name":"Shutdown command","activated":true,"config":"","info":{"example":"!shutdown","note":"","requirements":""}},{"id":11,"name":"Banned words","activated":true,"config":"","info":{"example":"","note":"Auto delete messages contained banned words","requirements":""}}],
-    welcomemessage: {"channelid":"541985319986135061","text":"Hello, welcome to Pixes World!"},
-    weather: {"degree":"C"}
+    gameStatus: "Pixes World",
+    statusType: "PLAYING",
+    commands: [{"id":1,"command":"cmds","message":"The Commands Are!","embed":true,"embedFields":[{"title":"!purge","text":"Purges The Number of Messages Sent!"},{"title":"!kick(@user)","text":"Kicks The User!"},{"title":"!report(@user)","text":"Reports The User!"},{"title":"!tempmuteuser(@user)","text":"Temp Mutes A User!"},{"title":"!serverinfo","text":"Shows The Server Info!"}]},{"id":2,"command":"help","message":"More Commands are","embed":true,"embedFields":[{"title":"!play","text":"!play (name of music)"},{"title":"!lockdown","text":"Locks The channel"},{"title":"!ticket [Reason]","text":"Creates a new ticket!"}]}],
+    plugins: [{"id":0,"name":"Purge messages","activated":true,"config":"","info":{"example":"!purge 20","note":"","requirements":"Create a logs channel"}},{"id":1,"name":"Welcome message","activated":true,"config":"welcomemessage","info":{"example":"","note":"","requirements":"Create a channel"}},{"id":2,"name":"Kick user","activated":true,"config":"","info":{"example":"!kick @user spam","note":"","requirements":"Create a logs channel"}},{"id":3,"name":"Ban user","activated":true,"config":"","info":{"example":"!ban @user spam","note":"","requirements":"Create a logs channel"}},{"id":4,"name":"Report user","activated":true,"config":"","info":{"example":"!report @user spam","note":"","requirements":"Create a logs channel"}},{"id":5,"name":"Temp mute user","activated":true,"config":"","info":{"example":"!tempmute @user 10s","note":"s = seconds, m = minutes, h = hours","requirements":"Create a logs channel"}},{"id":6,"name":"Server info","activated":true,"config":"","info":{"example":"!serverinfo","note":"","requirements":""}},{"id":7,"name":"Weather info","activated":true,"config":"weather","info":{"example":"!weather Copenhagen","note":"","requirements":""}},{"id":8,"name":"Music - Export only","activated":true,"config":"","info":{"example":"!play {YouTube URL}, !leave, !pause, !resume, !queue, !skip","note":"Export only","requirements":""}},{"id":9,"name":"Channel lockdown","activated":true,"config":"","info":{"example":"!lockdown 10s","note":"s = seconds, m = minutes, h = hours","requirements":""}},{"id":10,"name":"Shutdown command","activated":true,"config":"","info":{"example":"!shutdown","note":"","requirements":""}},{"id":11,"name":"Banned words","activated":true,"config":"bannedwords","info":{"example":"","note":"Auto delete messages contained banned words","requirements":""}},{"id":12,"name":"Ticket system","activated":true,"config":"ticketSystem","info":{"example":"!ticket I cant find Bob","note":"","requirements":"You need a channel to create tickets called: create-ticket, support or something like that."}}],
+    welcomemessage: {"channelid":"541985319986135061","text":"Hello! Welcome to Pixes World Games!"},
+    weather: {"degree":"C"},
+    ticketsystem: {"ticketCategoryID":"554561140387217418","createTicketChannelID":"554326394403029019"}
 };
 
 var ops = {
@@ -25,73 +25,27 @@ var ops = {
 }
 
 client.on("ready", async function () {
-	var status = 1;
-	
-  setInterval(() => {
-      (status == 1)
-      {
-          client.user.setActivity(`${client.guilds.array()[0].memberCount.toString()} members`, { type: "WATCHING" })
-          .catch(console.error); // If there's an error catch it then error it out to the console so Node.js doesn't scream at us for not catching the Promise error.
-          status = 2;
-      }  (status == 2) 
-          client.user.setActivity(`for !help`, { type: 'WATCHING' })
-          .catch(console.error);
-          status = 3;
-      
-       (status == 3) 
-          client.user.setActivity(`for !cmds`, { type: 'WATCHING' })
-          .catch(console.error);
-          status= 4;
-        (status == 4) 
-          client.user.setActivity(`Pixes World!`, { type: 'STREAMING', url: "https://twitch.tv/gamerleb" })
-          .catch(console.error);
-          status = 5;
-      
-       (status == 5)
-          client.user.setActivity(`Candy World!`, { type: 'PLAYING' })
-          .catch(console.error);
-          status= 6;
-      
-       (status == 6) 
-          client.user.setActivity(`Rob The Dockyard!`, { type: 'PLAYING' })
-          .catch(console.error);
-          status = 7;
-      
-       (status == 7) 
-        client.user.setActivity(`Case Clicker!`, { type: 'PLAYING' })
-        .catch(console.error);
-        status = 8;
-       
-          
-       {
-          client.user.setActivity(`Case Clicker!`, { type: 'PLAYING' })
-          .catch(console.error);
-          status = 1;
-      }
-    }, 10000)
-});
-client.on("message", message => {
-  if (message.channel.type === "dm") {
-    clbot.write(message.content, (response) => {
-      message.channel.startTyping();
-      setTimeout(() => {
-        message.channel.send(response.output).catch(console.error);
-        message.channel.stopTyping();
-      }, Math.random() * (1 - 3) + 1 * 1000);
-    });
-  }
-});
- 
-client.on("ready", () => {
-  console.log("I am ready!");
+	if(botConfigs.statusType === "PLAYING" || botConfigs.statusType === "WATCHING" || botConfigs.statusType === "LISTENING") {
+		client.user.setActivity(botConfigs.gameStatus, { type: botConfigs.statusType });
+	} else {
+		client.user.setActivity(botConfigs.gameStatus, { type: "PLAYING" });
+	}
 });
 
 client.on("guildCreate", async function () {
-  client.user.setActivity(botConfigs.gameStatus);
+  	if(botConfigs.statusType === "PLAYING" || botConfigs.statusType === "WATCHING" || botConfigs.statusType === "LISTENING") {
+		client.user.setActivity(botConfigs.gameStatus, { type: botConfigs.statusType });
+	} else {
+		client.user.setActivity(botConfigs.gameStatus, { type: "PLAYING" });
+	}
 });
 
 client.on("guildDelete", async function (guild) {
-  client.user.setActivity(botConfigs.gameStatus);
+  	if(botConfigs.statusType === "PLAYING" || botConfigs.statusType === "WATCHING" || botConfigs.statusType === "LISTENING") {
+		client.user.setActivity(botConfigs.gameStatus, { type: botConfigs.statusType });
+	} else {
+		client.user.setActivity(botConfigs.gameStatus, { type: "PLAYING" });
+	}
 });
 
 client.on("guildMemberAdd", async function (member) {
@@ -104,296 +58,415 @@ client.on("guildMemberAdd", async function (member) {
 
 client.on("message", async function (message) {
 	if (botConfigs.plugins[11].activated == true) {
-	    configs.bannedWords.forEach(element => {
-	        if (message.content.includes(element)) {
-	            message.delete().catch(O_o => { });
-	            message.author.send("Please don't swear in the server!");
-	            return;
-	        }
-	    });
-	}
-
-  let prefix = botConfigs.prefix;
-
-  if (message.author.bot) return;
-
-  if (message.content.indexOf(prefix) !== 0) return;
-
-  const args = message.content
-    .slice(prefix.length)
-    .trim()
-    .split(/ +/g);
-  const command = args.shift().toLowerCase();
-
-  if (command === "purge" && botConfigs.plugins[0].activated == true) {
-    const deleteCount = parseInt(args[0], 10);
-
-    let embed = new Discord.RichEmbed()
-      .setDescription("~Purge~")
-      .setColor("#e56b00")
-      .addField("Messages: ", `${deleteCount}`)
-      .addField("Purged By", `<@${message.author.id}> with ID ${message.author.id}`)
-      .addField("Purged In", message.channel)
-      .addField("Time", message.createdAt);
-
-    let channel = message.guild.channels.find(`name`, "logs");
-    if (!channel) {
-      message.channel.send("Can't find a 'logs' channel.");
-      return;
-    }
-
-    if (!deleteCount || deleteCount < 2 || deleteCount > 100) {
-      message.channel.send("Example: " + prefix + "purge 10");
-      message.channel.send("Please enter a number between 2 and 100");
-      return;
-    }
-
-    const fetched = await message.channel.fetchMessages({ limit: deleteCount });
-    channel.send(embed);
-    message.channel
-      .bulkDelete(fetched)
-      .catch(error => message.reply("Error. Contact an administrator."));
-  }
-
-  if (command === "kick" && botConfigs.plugins[2].activated == true) {
-    let bUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
-    if (!bUser) return message.channel.send("Can't find user!");
-    let bReason = args.join(" ").slice(22);
-    if (!message.member.hasPermission("KICK_MEMBERS")) return message.channel.send("You don't have permission!");
-    if (bUser.hasPermission("ADMINISTRATOR")) return message.channel.send("That person can't be kicked")
-
-
-    let banEmbed = new Discord.RichEmbed()
-      .setDescription("~Kick~")
-      .setColor("#bc0000")
-      .addField("Kicked User", `${bUser} with ID ${bUser.id}`)
-      .addField("Kicked By", `<@${message.author.id}> with ID ${message.author.id}`)
-      .addField("Kicked In", message.channel)
-      .addField("Time", message.createdAt)
-      .addField("Reason", bReason);
-
-    let incidentchannel = message.guild.channels.find(`name`, "logs");
-    if (!incidentchannel) {
-      message.channel.send("Can't find a 'logs' channel.");
-      return;
-    }
-
-    message.guild.member(bUser).kick(bReason);
-    incidentchannel.send(banEmbed);
-  }
-
-  if (command === "ban" && botConfigs.plugins[3].activated == true) {
-    let bUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
-    if (!bUser) return message.channel.send("Can't find user!");
-    let bReason = args.join(" ").slice(22);
-    if (!message.member.hasPermission("BAN_MEMBERS")) return message.channel.send("You don't have permission!");
-    if (bUser.hasPermission("ADMINISTRATOR")) return message.channel.send("That person can't be banned")
-
-
-    let banEmbed = new Discord.RichEmbed()
-      .setDescription("~Ban~")
-      .setColor("#bc0000")
-      .addField("Banned User", `${bUser} with ID ${bUser.id}`)
-      .addField("Banned By", `<@${message.author.id}> with ID ${message.author.id}`)
-      .addField("Banned In", message.channel)
-      .addField("Time", message.createdAt)
-      .addField("Reason", bReason);
-
-    let incidentchannel = message.guild.channels.find(`name`, "logs");
-    if (!incidentchannel) {
-      message.channel.send("Can't find a 'logs' channel.");
-      return;
-    }
-
-    message.guild.member(bUser).ban(bReason);
-    incidentchannel.send(banEmbed);
-  }
-
-  if (command === "report" && botConfigs.plugins[4].activated == true) {
-    let rUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
-    if (!rUser) return message.channel.send("Couldn't find user.");
-    let reason = args.join(" ").slice(22);
-
-    let reportEmbed = new Discord.RichEmbed()
-      .setDescription("Reports")
-      .setColor("#15f153")
-      .addField("Reported User", `${rUser} with ID: ${rUser.id}`)
-      .addField("Reported By", `${message.author} with ID: ${message.author.id}`)
-      .addField("Channel", message.channel)
-      .addField("Time", message.createdAt)
-      .addField("Reason", reason);
-
-
-    let reportschannel = message.guild.channels.find(`name`, "logs");
-    if (!reportschannel) {
-      message.channel.send("Can't find a 'logs' channel.");
-      return;
-    }
-
-    message.delete().catch(O_o => { });
-    reportschannel.send(reportEmbed);
-  }
-
-  if (command === "tempmute" && botConfigs.plugins[5].activated == true) {
-    let tomute = message.mentions.members.first() || message.guild.members.get(args[0]);
-    if (!tomute) return message.reply("Could't find user.");
-    if (tomute.hasPermission("ADMINISTRATOR")) return message.reply("Cant mute them!");
-    if (!message.member.hasPermission("MUTE_MEMBERS")) return message.channel.send("You don't have permission");
-
-    let muterole = message.guild.roles.find(`name`, "muted");
-    let muteEmbed = new Discord.RichEmbed()
-      .setDescription("~MUTED~")
-      .setColor("#e56b00")
-      .addField("Muted User", `${tomute} with ID ${tomute.id}`)
-      .addField("Muted By", `<@${message.author.id}> with ID ${message.author.id}`)
-      .addField("Muted In", message.channel)
-      .addField("Time", message.createdAt)
-
-    let muteChannel = message.guild.channels.find(`name`, "logs");
-    if (!muteChannel) {
-      message.channel.send("Can't find a 'logs' channel.");
-      return;
-    }
-    muteChannel.send(muteEmbed);
-    //start of create role
-    if (!muterole) {
-      try {
-        muterole = await message.guild.createRole({
-          name: "muted",
-          color: "#000000"
-          // permissions:[]
-        })
-        message.guild.channels.forEach(async (channel, id) => {
-          await channel.overwritePermissions(muterole, {
-            SEND_MESSAGES: false,
-            ADD_REACTIONS: false,
-            SPEAK: false
-          })
-        })
-      } catch (e) {
-        console.log(e.stack);
-      }
-    }
-    //end of create role 
-    let mutetime = args[1];
-    if (!mutetime) return message.reply("You didn't specify a time!");
-
-    await (tomute.addRole(muterole.id));
-    message.reply(`<@${tomute.id}> has been muted for ${ms(mutetime)}`)
-
-    setTimeout(function () {
-      tomute.removeRole(muterole.id);
-      message.channel.send(`<@${tomute.id}> has been unmuted!`)
-
-    }, ms(mutetime));
-
-  }
-
-  if (command === "serverinfo" && botConfigs.plugins[6].activated == true) {
-    let sicon = message.guild.iconURL;
-    let sererembed = new Discord.RichEmbed()
-      .setDescription("Server Information")
-      .setColor("#15f153")
-      .setThumbnail(sicon)
-      .addField("Server Name", message.guild.name)
-      .addField("Created On", message.guild.createdAt)
-      .addField("You Joined", message.member.joinedAt)
-      .addField("Total Members", message.guild.memberCount);
-
-    return message.channel.send(sererembed);
-  }
-
-  if (command === "weather" && botConfigs.plugins[7].activated == true) {
-    weather.find({ search: args.join(" "), degreeType: botConfigs.weather.degree }, function (err, result) { // Make sure you get that args.join part, since it adds everything after weather.
-      if (err) message.channel.send(err);
-
-      // We also want them to know if a place they enter is invalid.
-      if (result.length === 0) {
-        message.channel.send('**Please enter a valid location.**') // This tells them in chat that the place they entered is invalid.
-        return; // This exits the code so the rest doesn't run.
-      }
-
-      // Variables
-      var current = result[0].current; // This is a variable for the current part of the JSON output
-      var location = result[0].location; // This is a variable for the location part of the JSON output
-
-      // Let's use an embed for this.
-      const embed = new Discord.RichEmbed()
-        .setDescription(`**${current.skytext}**`) // This is the text of what the sky looks like, remember you can find all of this on the weather-js npm page.
-        .setAuthor(`Weather for ${current.observationpoint}`) // This shows the current location of the weather.
-        .setThumbnail(current.imageUrl) // This sets the thumbnail of the embed
-        .setColor(0x00AE86) // This sets the color of the embed, you can set this to anything if you look put a hex color picker, just make sure you put 0x infront of the hex
-        .addField('Timezone', `UTC${location.timezone}`, true) // This is the first field, it shows the timezone, and the true means `inline`, you can read more about this on the official discord.js documentation
-        .addField('Degree Type', location.degreetype, true)// This is the field that shows the degree type, and is inline
-        .addField('Temperature', `${current.temperature} Degrees`, true)
-        .addField('Feels Like', `${current.feelslike} Degrees`, true)
-        .addField('Winds', current.winddisplay, true)
-        .addField('Humidity', `${current.humidity}%`, true)
-
-      // Now, let's display it when called
-      message.channel.send({ embed });
-    });
-  }
-
-  if (command === "lockdown" && botConfigs.plugins[9].activated == true) {
-    let time = args[0];
-
-    if (!client.lockit) { client.lockit = []; }
-    let validUnlocks = ["release", "unlock", "u"];
-    if (!time) { return message.reply("I need a set time to lock the channel down for!"); }
-
-    const Lockembed = new Discord.RichEmbed()
-        .setColor(0xDD2E44)
-        .setTimestamp()
-        .setTitle("🔒 LOCKDOWN NOTICE 🔒")
-        .setDescription(`This channel has been lockdown by ${message.author.tag} for ${time}`);
-
-    const Unlockembed = new Discord.RichEmbed()
-        .setColor(0xDD2E44)
-        .setTimestamp()
-        .setTitle("🔓 LOCKDOWN NOTICE 🔓")
-        .setDescription("This channel is now unlocked.");
-
-    if (message.channel.permissionsFor(message.author.id).has("MUTE_MEMBERS") === false) {
-        const embed = new Discord.RichEmbed()
-            .setColor(0xDD2E44)
-            .setTimestamp()
-            .setTitle("❌ ERROR: MISSING PERMISSIONS! ❌")
-            .setDescription("You do not have the correct permissions for this command!");
-        return message.channel.send({ embed });
-    }
-
-    if (validUnlocks.includes(time)) {
-        message.channel.overwritePermissions(message.guild.id, { SEND_MESSAGES: null }).then(() => {
-            message.channel.send({ embed: Unlockembed });
-            clearTimeout(client.lockit[message.channel.id]);
-            delete client.lockit[message.channel.id];
-        }).catch(error => { console.log(error); });
-    } else {
-        message.channel.overwritePermissions(message.guild.id, { SEND_MESSAGES: false }).then(() => {
-            message.channel.send({ embed: Lockembed }).then(() => {
-                client.lockit[message.channel.id] = setTimeout(() => {
-                    message.channel.overwritePermissions(message.guild.id, {
-                        SEND_MESSAGES: null
-                    }).then(message.channel.send({ embed: Unlockembed })).catch(console.error);
-                    delete client.lockit[message.channel.id];
-                }, ms(time));
-            }).catch(error => { console.log(error); });
+        configs.bannedWords.forEach(async function (element) {
+            if (message.content.includes(element)) {
+                message.delete().catch(O_o => { });
+                let projectData = await handler.getProjectData();
+                message.author.send(projectData.bannedwords.responseMessage);
+                return;
+            }
         });
     }
-  }
 
-  if (command === "ping") {
-      const msg = await message.channel.send("Pinging...");
-      await msg.edit(`Pong! (Took: ${msg.createdTimestamp - message.createdTimestamp}ms.)`);
-  }
+    let prefix = botConfigs.prefix;
 
-  if (command === "shutdown" && botConfigs.plugins[10].activated == true) {
-      if (!message.member.hasPermission("ADMINISTRATOR")) return message.channel.send("You don't have permission!");
-      await message.channel.send(`Good night, ${message.author.tag}!`);
-      await message.delete().catch();
-      await process.exit().catch((e) => { console.error(e); });
-  }
+    if (message.author.bot) return;
+
+    if (message.content.indexOf(prefix) !== 0) return;
+
+    const args = message.content
+        .slice(prefix.length)
+        .trim()
+        .split(/ +/g);
+    const command = args.shift().toLowerCase();
+
+    if (command === "purge" && botConfigs.plugins[0].activated == true) {
+    	if (!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send("You don't have permission!");
+        const deleteCount = parseInt(args[0], 10);
+
+        let embed = new Discord.RichEmbed()
+            .setDescription("~Purge~")
+            .setColor("#e56b00")
+            .addField("Messages: ", `${deleteCount}`)
+            .addField("Purged By", `<@${message.author.id}> with ID ${message.author.id}`)
+            .addField("Purged In", message.channel)
+            .addField("Time", message.createdAt);
+
+        //let channel = message.guild.channels.find(`name`, "logs");
+        let channel = message.guild.channels.find(ch => ch.name === 'logs');
+        if (!channel) {
+            message.channel.send("Can't find a 'logs' channel.");
+            return;
+        }
+
+        if (!deleteCount || deleteCount < 2 || deleteCount > 100) {
+            message.channel.send("Example: " + prefix + "purge 10");
+            message.channel.send("Please enter a number between 2 and 100");
+            return;
+        }
+
+        const fetched = await message.channel.fetchMessages({ limit: deleteCount });
+        channel.send(embed);
+        message.channel
+            .bulkDelete(fetched)
+            .catch(error => message.reply("Error. Contact an administrator."));
+    }
+
+    if (command === "kick" && botConfigs.plugins[2].activated == true) {
+        let bUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+        if (!bUser) return message.channel.send("Can't find user!");
+        let bReason = args.join(" ").slice(22);
+        if (!message.member.hasPermission("KICK_MEMBERS")) return message.channel.send("You don't have permission!");
+        if (bUser.hasPermission("ADMINISTRATOR")) return message.channel.send("That person can't be kicked")
+
+
+        let banEmbed = new Discord.RichEmbed()
+            .setDescription("~Kick~")
+            .setColor("#bc0000")
+            .addField("Kicked User", `${bUser} with ID ${bUser.id}`)
+            .addField("Kicked By", `<@${message.author.id}> with ID ${message.author.id}`)
+            .addField("Kicked In", message.channel)
+            .addField("Time", message.createdAt)
+            .addField("Reason", bReason);
+
+        //let incidentchannel = message.guild.channels.find(`name`, "logs");
+        let channel = message.guild.channels.find(ch => ch.name === 'logs');
+        if (!channel) {
+            message.channel.send("Can't find a 'logs' channel.");
+            return;
+        }
+
+        message.guild.member(bUser).kick(bReason);
+        channel.send(banEmbed);
+    }
+
+    if (command === "ban" && botConfigs.plugins[3].activated == true) {
+        let bUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+        if (!bUser) return message.channel.send("Can't find user!");
+        let bReason = args.join(" ").slice(22);
+        if (!message.member.hasPermission("BAN_MEMBERS")) return message.channel.send("You don't have permission!");
+        if (bUser.hasPermission("ADMINISTRATOR")) return message.channel.send("That person can't be banned")
+
+
+        let banEmbed = new Discord.RichEmbed()
+            .setDescription("~Ban~")
+            .setColor("#bc0000")
+            .addField("Banned User", `${bUser} with ID ${bUser.id}`)
+            .addField("Banned By", `<@${message.author.id}> with ID ${message.author.id}`)
+            .addField("Banned In", message.channel)
+            .addField("Time", message.createdAt)
+            .addField("Reason", bReason);
+
+        //let incidentchannel = message.guild.channels.find(`name`, "logs");
+        let channel = message.guild.channels.find(ch => ch.name === 'logs');
+        if (!channel) {
+            message.channel.send("Can't find a 'logs' channel.");
+            return;
+        }
+
+        message.guild.member(bUser).ban(bReason);
+        channel.send(banEmbed);
+    }
+
+    if (command === "report" && botConfigs.plugins[4].activated == true) {
+        let rUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+        if (!rUser) return message.channel.send("Couldn't find user.");
+        let reason = args.join(" ").slice(22);
+
+        let reportEmbed = new Discord.RichEmbed()
+            .setDescription("Reports")
+            .setColor("#15f153")
+            .addField("Reported User", `${rUser} with ID: ${rUser.id}`)
+            .addField("Reported By", `${message.author} with ID: ${message.author.id}`)
+            .addField("Channel", message.channel)
+            .addField("Time", message.createdAt)
+            .addField("Reason", reason);
+
+
+        //let reportschannel = message.guild.channels.find(`name`, "logs");
+        let channel = message.guild.channels.find(ch => ch.name === 'logs');
+        if (!channel) {
+            message.channel.send("Can't find a 'logs' channel.");
+            return;
+        }
+
+        message.delete().catch(O_o => { });
+        channel.send(reportEmbed);
+    }
+
+    if (command === "tempmute" && botConfigs.plugins[5].activated == true) {
+        let tomute = message.mentions.members.first() || message.guild.members.get(args[0]);
+        if (!tomute) return message.reply("Could't find user.");
+        if (tomute.hasPermission("ADMINISTRATOR")) return message.reply("He's an administrator. You can't do that!");
+        if (!message.member.hasPermission("MUTE_MEMBERS")) return message.channel.send("You don't have permission");
+
+        let muterole = message.guild.roles.find(`name`, "muted");
+        let muteEmbed = new Discord.RichEmbed()
+            .setDescription("~MUTED~")
+            .setColor("#e56b00")
+            .addField("Muted User", `${tomute} with ID ${tomute.id}`)
+            .addField("Muted By", `<@${message.author.id}> with ID ${message.author.id}`)
+            .addField("Muted In", message.channel)
+            .addField("Time", message.createdAt)
+
+        //let muteChannel = message.guild.channels.find(`name`, "logs");
+        let channel = message.guild.channels.find(ch => ch.name === 'logs');
+        if (!channel) {
+            message.channel.send("Can't find a 'logs' channel.");
+            return;
+        }
+        channel.send(muteEmbed);
+        if (!muterole) {
+            try {
+                muterole = await message.guild.createRole({
+                    name: "muted",
+                    color: "#000000"
+                })
+                message.guild.channels.forEach(async (channel, id) => {
+                    await channel.overwritePermissions(muterole, {
+                        SEND_MESSAGES: false,
+                        ADD_REACTIONS: false,
+                        SPEAK: false
+                    })
+                })
+            } catch (e) {
+                console.log(e.stack);
+            }
+        }
+
+        let mutetime = args[1];
+        if (!mutetime) return message.reply("You didn't specify a time!");
+
+        await (tomute.addRole(muterole.id));
+        message.reply(`<@${tomute.id}> has been muted for ${ms(mutetime)}`)
+
+        setTimeout(function () {
+            tomute.removeRole(muterole.id);
+            message.channel.send(`<@${tomute.id}> has been unmuted!`)
+
+        }, ms(mutetime));
+
+    }
+
+    if (command === "serverinfo" && botConfigs.plugins[6].activated == true) {
+        let sicon = message.guild.iconURL;
+        let sererembed = new Discord.RichEmbed()
+            .setDescription("Server Information")
+            .setColor("#15f153")
+            .setThumbnail(sicon)
+            .addField("Server Name", message.guild.name)
+            .addField("Created On", message.guild.createdAt)
+            .addField("You Joined", message.member.joinedAt)
+            .addField("Total Members", message.guild.memberCount);
+
+        return message.channel.send(sererembed);
+    }
+
+    if (command === "weather" && botConfigs.plugins[7].activated == true) {
+        weather.find({ search: args.join(" "), degreeType: botConfigs.weather.degree }, function (err, result) {
+            if (err) message.channel.send(err);
+
+            if (result.length === 0) {
+                message.channel.send('**Please enter a valid location.**')
+                return;
+            }
+
+            var current = result[0].current;
+            var location = result[0].location;
+
+            const embed = new Discord.RichEmbed()
+                .setDescription(`**${current.skytext}**`)
+                .setAuthor(`Weather for ${current.observationpoint}`)
+                .setThumbnail(current.imageUrl)
+                .setColor(0x00AE86)
+                .addField('Timezone', `UTC${location.timezone}`, true)
+                .addField('Degree Type', location.degreetype, true)
+                .addField('Temperature', `${current.temperature} Degrees`, true)
+                .addField('Feels Like', `${current.feelslike} Degrees`, true)
+                .addField('Winds', current.winddisplay, true)
+                .addField('Humidity', `${current.humidity}%`, true)
+
+            message.channel.send({ embed });
+        });
+    }
+
+    if (command === "lockdown" && botConfigs.plugins[9].activated == true) {
+        let time = args[0];
+
+        if (!client.lockit) { client.lockit = []; }
+        let validUnlocks = ["release", "unlock", "u"];
+        if (!time) { return message.reply("I need a set time to lock the channel down for!"); }
+
+        const Lockembed = new Discord.RichEmbed()
+            .setColor(0xDD2E44)
+            .setTimestamp()
+            .setTitle("🔒 LOCKDOWN NOTICE 🔒")
+            .setDescription(`This channel has been lockdown by ${message.author.tag} for ${time}`);
+
+        const Unlockembed = new Discord.RichEmbed()
+            .setColor(0xDD2E44)
+            .setTimestamp()
+            .setTitle("🔓 LOCKDOWN NOTICE 🔓")
+            .setDescription("This channel is now unlocked.");
+
+        if (message.channel.permissionsFor(message.author.id).has("MUTE_MEMBERS") === false) {
+            const embed = new Discord.RichEmbed()
+                .setColor(0xDD2E44)
+                .setTimestamp()
+                .setTitle("❌ ERROR: MISSING PERMISSIONS! ❌")
+                .setDescription("You do not have the correct permissions for this command!");
+            return message.channel.send({ embed });
+        }
+
+        if (validUnlocks.includes(time)) {
+            message.channel.overwritePermissions(message.guild.id, { SEND_MESSAGES: null }).then(() => {
+                message.channel.send({ embed: Unlockembed });
+                clearTimeout(client.lockit[message.channel.id]);
+                delete client.lockit[message.channel.id];
+            }).catch(error => { console.log(error); });
+        } else {
+            message.channel.overwritePermissions(message.guild.id, { SEND_MESSAGES: false }).then(() => {
+                message.channel.send({ embed: Lockembed }).then(() => {
+                    client.lockit[message.channel.id] = setTimeout(() => {
+                        message.channel.overwritePermissions(message.guild.id, {
+                            SEND_MESSAGES: null
+                        }).then(message.channel.send({ embed: Unlockembed })).catch(console.error);
+                        delete client.lockit[message.channel.id];
+                    }, ms(time));
+                }).catch(error => { console.log(error); });
+            });
+        }
+    }
+
+    if (command === "ping") {
+        const msg = await message.channel.send("Pinging...");
+        await msg.edit(`Pong! (Took: ${msg.createdTimestamp - message.createdTimestamp}ms.)`);
+    }
+
+    if (command === "shutdown" && botConfigs.plugins[10].activated == true) {
+        if (!message.member.hasPermission("ADMINISTRATOR")) return message.channel.send("You don't have permission!");
+        await message.channel.send(`Good night, ${message.author.tag}!`);
+        await message.delete().catch();
+        await process.exit().catch((e) => { console.error(e); });
+    }
+
+    if (command === "ticket" && botConfigs.plugins[12].activated == true) {
+        if (botConfigs.ticketsystem.createTicketChannelID == "" || botConfigs.ticketsystem.createTicketChannelID == null || botConfigs.ticketsystem.createTicketChannelID == undefined || botConfigs.ticketsystem.ticketCategoryID == "" || botConfigs.ticketsystem.ticketCategoryID == null || botConfigs.ticketsystem.ticketCategoryID == undefined) return message.channel.send("The ticket system is not working - Please run the config").catch(console.error);
+        if (message.channel.id === botConfigs.ticketsystem.createTicketChannelID) {
+            if (message.guild.channels.some(ch => ch.name === message.author.id)) {
+                message.author.send("You already have a open ticket.\n\nIf you wanna close the ticket: \nGo to the ticket channel, and type: " + prefix + "close ticket \n\nBest regards\n" + message.guild.name);
+                message.delete().catch(O_o => { });
+                return;
+            }
+
+            if (!args[0]) return message.channel.send("Please enter a subject - Example: " + prefix + "ticket I need support").catch(console.error);
+
+            let subject = message.content.split(' ').splice(1).join(' ');
+            if (subject.length > 20) return message.channel.send("Subject max length: 20 characters").catch(console.error);
+            message.guild.createChannel(message.author.id, 'text').then(async m => {
+                await m.setParent(botConfigs.ticketsystem.ticketCategoryID);
+                //await m.lockPermissions();
+                await m.overwritePermissions(message.guild.id, {
+                    VIEW_CHANNEL: false
+                });
+
+                m.overwritePermissions(message.author.id, {
+                    VIEW_CHANNEL: true
+                });
+                m.send("Subject: " + subject);
+            });
+            message.author.send("Ticket created! We appreciate you contacting us. One of our staff members will get back to you shortly. \n\nBest regards\n" + message.guild.name);
+            message.delete().catch(O_o => { });
+        } else {
+            let channel = await client.channels.find(ch => ch.id === botConfigs.ticketsystem.createTicketChannelID);
+            return message.channel.send("Please go to: <#" + channel.id + ">").catch(console.error);
+        }
+    }
+
+    if (command === "close") {
+        if (!args[0]) return message.channel.send("Please specify what you wanna close - Example: !close ticket").catch(console.error);
+        if (args[0] === "ticket") {
+            if (message.channel.parent.id === botConfigs.ticketsystem.ticketCategoryID) {
+                message.channel.delete();
+                if (message.channel.name === message.author.id) {
+                    message.author.send("The ticket has been closed and deleted. \n\nBest regards\n" + message.guild.name);
+                } else {
+                    message.author.send("The ticket has been closed and deleted. \n\nBest regards\n" + message.guild.name);
+                    client.fetchUser(message.channel.name)
+                        .then(user => {
+                            user.send("The ticket has been closed and deleted by an administrator. \n\nBest regards\n" + message.guild.name)
+                        })
+                }
+            } else {
+                message.channel.send("Please go to a ticket, and try again.");
+            }
+        }
+    }
+
+    botConfigs.commands.forEach(element => {
+        element.command = element.command.toLowerCase();
+        if (command === element.command) {
+            if (element.embed) {
+                if (element.embedFields.length == 1) {
+                    let embed = new Discord.RichEmbed()
+                        .setColor("RANDOM")
+                        .addField(element.embedFields[0].title, element.embedFields[0].text);
+
+                    message.channel.send({ embed });
+                } else if (element.embedFields.length == 2) {
+                    let embed = new Discord.RichEmbed()
+                        .setColor("RANDOM")
+                        .addField(element.embedFields[0].title, element.embedFields[0].text)
+                        .addField(element.embedFields[1].title, element.embedFields[1].text);
+
+                    message.channel.send({ embed });
+                } else if (element.embedFields.length == 3) {
+                    let embed = new Discord.RichEmbed()
+                        .setColor("RANDOM")
+                        .addField(element.embedFields[0].title, element.embedFields[0].text)
+                        .addField(element.embedFields[1].title, element.embedFields[1].text)
+                        .addField(element.embedFields[2].title, element.embedFields[2].text);
+
+                    message.channel.send({ embed });
+                } else if (element.embedFields.length == 4) {
+                    let embed = new Discord.RichEmbed()
+                        .setColor("RANDOM")
+                        .addField(element.embedFields[0].title, element.embedFields[0].text)
+                        .addField(element.embedFields[1].title, element.embedFields[1].text)
+                        .addField(element.embedFields[2].title, element.embedFields[2].text)
+                        .addField(element.embedFields[3].title, element.embedFields[3].text);
+
+                    message.channel.send({ embed });
+                } else if (element.embedFields.length == 5) {
+                    let embed = new Discord.RichEmbed()
+                        .setColor("RANDOM")
+                        .addField(element.embedFields[0].title, element.embedFields[0].text)
+                        .addField(element.embedFields[1].title, element.embedFields[1].text)
+                        .addField(element.embedFields[2].title, element.embedFields[2].text)
+                        .addField(element.embedFields[3].title, element.embedFields[3].text)
+                        .addField(element.embedFields[4].title, element.embedFields[4].text);
+
+                    message.channel.send({ embed });
+                } else {
+                    message.channel.send("Error, contact an administrator.");
+                }
+            } else {
+                message.channel.send(element.message);
+            }
+        }
+    });
+
+    if (command === "commands") {
+        let allCommands = "";
+        botConfigs.commands.forEach(element => {
+            if (allCommands.length < 1 || allCommands == "") {
+                allCommands = prefix + element.command;
+            } else {
+                allCommands = allCommands + ", " + prefix + element.command;
+            }
+        });
+        message.channel.send("Commands: " + allCommands);
+    }
 
   if (command === "leave" && botConfigs.plugins[8].activated == true || command === "stop" && botConfigs.plugins[8].activated == true) {
     if (!message.member.voiceChannel) return message.channel.send('Please connect to a voice channel.');
@@ -498,68 +571,6 @@ client.on("message", async function (message) {
       return fetched.dispatcher.end();
     }
     message.channel.send(`Succesfully voted to skip ${fetched.queue[0].voteSkips.length}/${required} required`);
-  }
-
-  botConfigs.commands.forEach(element => {
-    element.command = element.command.toLowerCase();
-    if (command === element.command) {
-      //message.channel.send(element.message);
-      if (element.embed) {
-        console.log(element.embedFields.length);
-        if (element.embedFields.length == 1) {
-          let embed = new Discord.RichEmbed()
-            .addField(element.embedFields[0].title + ":", element.embedFields[0].text);
-
-          message.channel.send({ embed });
-        } else if (element.embedFields.length == 2) {
-          let embed = new Discord.RichEmbed()
-            .addField(element.embedFields[0].title + ":", element.embedFields[0].text)
-            .addField(element.embedFields[1].title + ":", element.embedFields[1].text);
-
-          message.channel.send({ embed });
-        } else if (element.embedFields.length == 3) {
-          let embed = new Discord.RichEmbed()
-            .addField(element.embedFields[0].title + ":", element.embedFields[0].text)
-            .addField(element.embedFields[1].title + ":", element.embedFields[1].text)
-            .addField(element.embedFields[2].title + ":", element.embedFields[2].text);
-
-          message.channel.send({ embed });
-        } else if (element.embedFields.length == 4) {
-          let embed = new Discord.RichEmbed()
-            .addField(element.embedFields[0].title + ":", element.embedFields[0].text)
-            .addField(element.embedFields[1].title + ":", element.embedFields[1].text)
-            .addField(element.embedFields[2].title + ":", element.embedFields[2].text)
-            .addField(element.embedFields[3].title + ":", element.embedFields[3].text);
-
-          message.channel.send({ embed });
-        } else if (element.embedFields.length == 5) {
-          let embed = new Discord.RichEmbed()
-            .addField(element.embedFields[0].title + ":", element.embedFields[0].text)
-            .addField(element.embedFields[1].title + ":", element.embedFields[1].text)
-            .addField(element.embedFields[2].title + ":", element.embedFields[2].text)
-            .addField(element.embedFields[3].title + ":", element.embedFields[3].text)
-            .addField(element.embedFields[4].title + ":", element.embedFields[4].text);
-
-          message.channel.send({ embed });
-        } else {
-          message.channel.send("Error, contact an administrator.");
-        }
-      } else {
-        message.channel.send(element.message);
-      }
-    }
-  });
-
-  if (command === "commands") {
-    let allCommands = "";
-    botConfigs.commands.forEach(element => {
-      if (allCommands.length < 1 || allCommands == "") {
-        allCommands = "!" + element.command;
-      } else {
-        allCommands = allCommands + ", !" + element.command;
-      }
-    });
-    message.channel.send("Commands: " + allCommands);
   }
 });
 
