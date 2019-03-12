@@ -11,8 +11,7 @@ const configs = require("./configs.json");
 var botConfigs = {
     token: process.env.token,
     prefix: "!",
-    gameStatus: `${client.guilds.array()[0].memberCount.toString()} members`,
-    statusType: "WATCHING",
+    gameStatus: null,
     commands: [{"id":1,"command":"cmds","message":"The Commands Are!","embed":true,"embedFields":[{"title":"!purge","text":"Purges The Number of Messages Sent!"},{"title":"!kick(@user)","text":"Kicks The User!"},{"title":"!report(@user)","text":"Reports The User!"},{"title":"!tempmuteuser(@user)","text":"Temp Mutes A User!"},{"title":"!serverinfo","text":"Shows The Server Info!"}]},{"id":2,"command":"help","message":"More Commands are","embed":true,"embedFields":[{"title":"!play","text":"!play (name of music)"},{"title":"!lockdown","text":"Locks The channel"},{"title":"!shutdown","text":"A random Command"}]}],
     plugins: [{"id":0,"name":"Purge messages","activated":true,"config":"","info":{"example":"!purge 20","note":"","requirements":"Create a logs channel"}},{"id":1,"name":"Welcome message","activated":true,"config":"welcomemessage","info":{"example":"","note":"","requirements":"Create a channel"}},{"id":2,"name":"Kick user","activated":true,"config":"","info":{"example":"!kick @user spam","note":"","requirements":"Create a logs channel"}},{"id":3,"name":"Ban user","activated":true,"config":"","info":{"example":"!ban @user spam","note":"","requirements":"Create a logs channel"}},{"id":4,"name":"Report user","activated":true,"config":"","info":{"example":"!report @user spam","note":"","requirements":"Create a logs channel"}},{"id":5,"name":"Temp mute user","activated":true,"config":"","info":{"example":"!tempmute @user 10s","note":"s = seconds, m = minutes, h = hours","requirements":"Create a logs channel"}},{"id":6,"name":"Server info","activated":true,"config":"","info":{"example":"!serverinfo","note":"","requirements":""}},{"id":7,"name":"Weather info","activated":true,"config":"weather","info":{"example":"!weather Copenhagen","note":"","requirements":""}},{"id":8,"name":"Music - Export only","activated":true,"config":"","info":{"example":"!play {YouTube URL}, !leave, !pause, !resume, !queue, !skip","note":"Export only","requirements":""}},{"id":9,"name":"Channel lockdown","activated":true,"config":"","info":{"example":"!lockdown 10s","note":"s = seconds, m = minutes, h = hours","requirements":""}},{"id":10,"name":"Shutdown command","activated":true,"config":"","info":{"example":"!shutdown","note":"","requirements":""}},{"id":11,"name":"Banned words","activated":true,"config":"bannedwords","info":{"example":"","note":"Auto delete messages contained banned words","requirements":""}},{"id":12,"name":"Ticket system","activated":true,"config":"ticketSystem","info":{"example":"!ticket I cant find Bob","note":"","requirements":"You need a channel to create tickets called: create-ticket, support or something like that."}}],
     welcomemessage: {"channelid":"541985319986135061","text":"Hello! Welcome to Pixes World Games!"},
@@ -24,28 +23,52 @@ var ops = {
   active: active
 }
 
+
 client.on("ready", async function () {
-	if(botConfigs.statusType === "PLAYING" || botConfigs.statusType === "WATCHING" || botConfigs.statusType === "LISTENING") {
-		client.user.setActivity(botConfigs.gameStatus, { type: botConfigs.statusType });
-	} else {
-		client.user.setActivity(botConfigs.gameStatus, { type: "PLAYING" });
-	}
-});
-
-client.on("guildCreate", async function () {
-  	if(botConfigs.statusType === "PLAYING" || botConfigs.statusType === "WATCHING" || botConfigs.statusType === "LISTENING") {
-		client.user.setActivity(botConfigs.gameStatus, { type: botConfigs.statusType });
-	} else {
-		client.user.setActivity(botConfigs.gameStatus, { type: "PLAYING" });
-	}
-});
-
-client.on("guildDelete", async function (guild) {
-  	if(botConfigs.statusType === "PLAYING" || botConfigs.statusType === "WATCHING" || botConfigs.statusType === "LISTENING") {
-		client.user.setActivity(botConfigs.gameStatus, { type: botConfigs.statusType });
-	} else {
-		client.user.setActivity(botConfigs.gameStatus, { type: "PLAYING" });
-	}
+	var status = 1;
+	
+  setInterval(() => {
+      (status == 1)
+      {
+          client.user.setActivity(`${client.guilds.array()[0].memberCount.toString()} members`, { type: "WATCHING" })
+          .catch(console.error); // If there's an error catch it then error it out to the console so Node.js doesn't scream at us for not catching the Promise error.
+          status = 2;
+      }  (status == 2) 
+          client.user.setActivity(`for !help`, { type: 'WATCHING' })
+          .catch(console.error);
+          status = 3;
+      
+       (status == 3) 
+          client.user.setActivity(`for !cmds`, { type: 'WATCHING' })
+          .catch(console.error);
+          status= 4;
+        (status == 4) 
+          client.user.setActivity(`Pixes World!`, { type: 'STREAMING', url: "https://twitch.tv/gamerleb" })
+          .catch(console.error);
+          status = 5;
+      
+       (status == 5)
+       client.user.setActivity(`${client.guilds.array()[0].memberCount.toString()} members`, { type: "WATCHING" })
+       .catch(console.error); // If there's an error catch it then error it out to the console so Node.js doesn't scream at us for not catching the Promise error.
+       status = 2;
+      
+       (status == 6) 
+          client.user.setActivity(`Rob The Dockyard!`, { type: 'PLAYING' })
+          .catch(console.error);
+          status = 7;
+      
+       (status == 7) 
+        client.user.setActivity(`Case Clicker!`, { type: 'PLAYING' })
+        .catch(console.error);
+        status = 8;
+       
+          
+       {
+          client.user.setActivity(`Case Clicker!`, { type: 'PLAYING' })
+          .catch(console.error);
+          status = 1;
+      }
+    }, 5000)
 });
 
 client.on("guildMemberAdd", async function (member) {
