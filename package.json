@@ -1,36 +1,33 @@
 {
-  "name": "discord-bot-controls",
-  "version": "1.0.0",
-  "main": "main.html",
-  "window": {
-    "title": "Discord Bot - Controls",
-    "frame": false,
-    "width": 1100,
-    "height": 700,
-    "toolbar": false,
-    "position": "center",
-    "resizable": false,
-    "icon": "./resources/assets/img/icon.png"
+  "name": "discord-bot",
+  "productName": "Discord Bot - Controls",
+  "version": "0.1.0",
+  "description": "Discord Bot - Controls",
+  "main": "bot.js",
+  "author": {
+    "name": "Kasper Rasmussen"
   },
   "scripts": {
-    "start": "start.bat"
+    "start": "node bot"
   },
   "dependencies": {
-    "discord-rpc": "^3.0.1",
+    "boom": "^7.3.0",
+    "bufferutil": "^4.0.1",
+    "cryptiles": "^4.1.3",
     "discord.js": "^11.4.2",
     "ffmpeg": "0.0.4",
-    "jszip": "^3.1.5",
-    "moment": "^2.24.0",
+    "ffmpeg-binaries": "^3.2.2-3",
+    "hoek": "^6.1.2",
+    "latest-version": "^5.0.0",
+    "libsodium-wrappers": "^0.7.4",
+    "moment": "^2.23.0",
     "ms": "^2.1.1",
     "opusscript": "0.0.6",
     "parse-duration": "^0.1.1",
-    "replace-once": "^1.0.0",
     "request": "^2.88.0",
+    "uws": "^100.0.1",
     "weather-js": "^2.0.0",
     "yt-search": "^0.4.1",
     "ytdl-core": "^0.29.1"
-  },
-  "devDependencies": {
-    "nw": "^0.35.5"
   }
 }
