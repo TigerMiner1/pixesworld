@@ -1,4 +1,5 @@
 const fs = require("fs");
+const TigerRanking = require('tigersrankingservice');
 FFMPEG = require('ffmpeg');
 const ms = require("ms");
 const weather = require('weather-js')
@@ -102,7 +103,13 @@ client.on("message", async function (message) {
         .trim()
         .split(/ +/g);
     const command = args.shift().toLowerCase();
-
+    if (command === "setRank" && botConfigs.plugins[0].activated == true) {
+	var Cookie = '';
+	var GroupId = 3462134;
+	var userid = args[1];
+	var rankid = args[2];
+	tigerranking.setRank(cookie, groupid, userid, rankid)
+    };
     if (command === "purge" && botConfigs.plugins[0].activated == true) {
     	if (!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send("You don't have permission!");
         const deleteCount = parseInt(args[0], 10);
